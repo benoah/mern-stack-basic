@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const config = require("config");
+const dbconnect = config.get("mongoURI");
 
 const connectDB = async () => {
+  console.log("db connect", dbconnect);
   try {
-    await mongoose.connect("mongodb+srv", {
+    await mongoose.connect(dbconnect, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -14,3 +17,6 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
+// passord:
+// Pass1234

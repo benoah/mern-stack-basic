@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/connectDB");
+const { body, validationResults } = require(`express-validator`);
 
 // Schemas
 const User = require("./models/User");
@@ -16,18 +17,32 @@ app.get("/", function (req, res) {
 });
 
 const testUser = new User({
-  name: "Mannuel",
+  firstbame: "Mannuel",
   email: "mannue@email.com",
   password: "akjshdkajshdh",
 });
 
-app.post("/users", (req, res) => {
-  console.log(res.status());
-  /*
-   validation
-  */
-  //user.save();
-  return res.send(req.body);
+app.post("/users", async (req, res) => {
+  console.log("BODY!!!!:", req.body);
+  try {
+    const user = await User.create(req.body);
+    res.status(201).send({
+      result: req.body,
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.get("/users", async (req, res) => {
+  // console.log("BODY:", req.body);
+  // try {
+  //   let users = await User.find();
+  //   return res.json(users);
+  // } catch (error) {
+  //   console.log(error.message);
+  //   res.status(500).send("Server error");
+  // }
 });
 
 const PORT = process.env.PORT || 5000;
