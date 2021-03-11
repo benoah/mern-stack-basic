@@ -1,6 +1,5 @@
 const express = require("express");
 const connectDB = require("./config/connectDB");
-// we have been installing jsonwebtoken
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 const config = require("config");
@@ -12,6 +11,7 @@ const User = require("./models/User");
 const app = express();
 
 connectDB();
+
 // Middleware
 app.use(express.json());
 
@@ -52,7 +52,6 @@ app.post(
           id: user.id,
         },
       };
-      // jwt.sign(payload, secretOrPrivateKey, [options, callback])
 
       jwt.sign(
         payload,

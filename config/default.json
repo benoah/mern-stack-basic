@@ -1,3 +1,4 @@
 {
-    "mongoURI":   "mongodb+srv://ben:Pass1234@cluster0.2io0f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongoURI":   "mongodb+srv://ben:Pass1234@cluster0.2io0f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "secretToken": "sgfdgjghdfg"
 }
