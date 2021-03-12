@@ -1,26 +1,19 @@
 const express = require("express");
-const connectDB = require("./config/connectDB");
+const router = express.Router();
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 const config = require("config");
-const auth = require("./middleware/auth");
+const auth = require("../../middleware/auth");
+const User = require("../../models/User");
 
-// Schemas
-const User = require("./models/User");
-
-const app = express();
-
-connectDB();
-
-// Middleware
-app.use(express.json());
-
-app.get("/", function (req, res) {
-  res.send("Hello");
-});
-
-app.post(
-  "/users",
+/*
+ * @route  POST api/auth
+ * @desc   Register user by a token
+ * @access Private
+ */
+router.post(
+  "/",
   body("firstName").isLength({ min: 3 }),
   body("email").isEmail(),
   body("password").isLength({ min: 5 }),
@@ -47,6 +40,10 @@ app.post(
         password: password,
       });
 
+      const salts = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salts);
+
       const payload = {
         user: {
           id: user.id,
@@ -72,18 +69,4 @@ app.post(
   }
 );
 
-app.get("/users", auth, async (reg, res) => {
-  try {
-    let users = await User.find();
-    return res.json(users);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server error");
-  }
-});
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server started at ${PORT}`);
-});
+module.exports = router;
